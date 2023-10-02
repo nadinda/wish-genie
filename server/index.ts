@@ -1,12 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
 
 const app = express();
 dotenv.config();
 
-// routes
+// Configure Express to use EJS
+app.set("views", path.join("./src/", "views"));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+
+// define a route handler for the default home page
 app.get("/", (_, res) => {
-  res.send("What's up doc ?!");
+  // render the index template
+  res.render("index");
 });
 
 // start the server
