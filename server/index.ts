@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
+import { connectDB } from "./database/db.js";
 
 const app = express();
 dotenv.config();
@@ -22,3 +23,5 @@ app.listen(process.env.DEV_PORT, () => {
     `server running : http://${process.env.DEV_HOST}:${process.env.DEV_PORT}`
   );
 });
+
+connectDB();
