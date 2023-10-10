@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 dotenv.config();
 
 const connectDB = async () => {
-  console.log("MongoDB is running");
+  console.log("connecting to MongoDB");
   mongoose.set("strictQuery", true);
   await mongoose
     .connect(`${process.env.MONGO_URL}`)
