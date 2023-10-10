@@ -23,6 +23,11 @@ app.get("/addItem", (_, res) => {
   res.render("addItem");
 });
 
+app.get("/profile", async (_, res) => {
+  const items = await Item.find({}).exec();
+  res.render("profile", { items: items });
+});
+
 app.post("/addItem", async (req, res) => {
   const newItem = Object.assign(new Item(), req.body);
   const savedItem = await newItem.save();

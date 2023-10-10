@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="css/profile.css" />
+    <title>Wish Genie</title>
+  </head>
+
+  <body>
+    <nav class="navbar sticky">
+      <a href="/">Wish Genie</a>
+      <ul class="nav-links-container">
+          <li class="nav-link"><a href="/" class="links">Sign Out</a></li>
+      </ul>
+    </nav>
+
+    <div class="user-details-container">
+      <div class="left">
+        <img src="https://images.unsplash.com/photo-1634926878768-2a5b3c42f139?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2200&q=80" />
+        <button type="button" >Edit profile</button>
+        <button type="button" >Share profile</button>
+      </div>
+      <div class="right">
+        <h3>Jane Doe</h3>
+        <p>@cooljane</p>
+      </div>
+    </div>
+
+    <div class="card-container">
+      <% items.forEach(item => { %>
+        <div class="card">
+        <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2874&q=80" alt="Item Image" style="width:100%">
+        <div class="card-details-container">
+          <h4><b><%=item.name%></b></h4>
+          <p><%=item.target_amount%></p>
+          <p><%=item.description%></p>
+          <button class="card-button">Gift It Now</button>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </body>
+
+</html>
