@@ -11,7 +11,7 @@ dotenv.config();
 app.set("views", path.join("./src/", "views"));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 // define a route handler for the default home page
 app.get("/", (_, res) => {
@@ -21,6 +21,14 @@ app.get("/", (_, res) => {
 
 app.get("/addItem", (_, res) => {
   res.render("addItem");
+});
+
+app.get("/signup", (_, res) => {
+  res.render("signup");
+});
+
+app.get("/signin", (_, res) => {
+  res.render("signin");
 });
 
 app.get("/profile", async (_, res) => {
