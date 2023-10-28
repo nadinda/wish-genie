@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { connectDB } from "./database/db.js";
 import Item from "./models/itemModel.js";
+import User from "./models/userModel.js";
 
 const app = express();
 dotenv.config();
@@ -40,6 +41,35 @@ app.post("/addItem", async (req, res) => {
   const newItem = Object.assign(new Item(), req.body);
   const savedItem = await newItem.save();
   res.redirect("/item/" + savedItem.id);
+});
+
+app.post("/signup", async (req, res) => {
+  const newUser = new User({
+    fullName: req.body.fullName,
+    userName: req.body.userName,
+    email: req.body.email,
+    bio: req.body.bio,
+  });
+
+  newUser.password = await newUser.createHash(req.body.password);
+  const savedUser = await newUser.save();
+  res.redirect("/user/" + savedUser.id);
+});
+
+app.post("/signin", async (req, res) => {
+  let user = await User.findOne({ email: req.body.email });
+
+  if (user === null) {
+    return res.status(400).json({ message: "User not found." });
+  } else {
+    if (await user.validatePassword(req.body.password)) {
+      return res.status(200).json({
+        message: "User Successfully Logged In",
+      });
+    } else {
+      return res.status(400).json({ message: "User not found." });
+    }
+  }
 });
 
 // start the server
