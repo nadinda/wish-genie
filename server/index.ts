@@ -1,9 +1,11 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import path from "path";
+import session from "express-session";
 import { connectDB } from "./database/db.js";
 import Item from "./models/itemModel.js";
 import User from "./models/userModel.js";
+import "./types.js";
 
 const app = express();
 dotenv.config();
@@ -13,6 +15,15 @@ app.set("views", path.join("./src/", "views"));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: `${process.env.SESSION_SECRET}` }));
+
+function restrict(req: Request, res: Response, next: NextFunction) {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect("/signin");
+  }
+}
 
 // define a route handler for the default home page
 app.get("/", (_, res) => {
@@ -32,7 +43,7 @@ app.get("/signin", (_, res) => {
   res.render("signin");
 });
 
-app.get("/profile", async (_, res) => {
+app.get("/profile", restrict, async (_, res) => {
   const items = await Item.find({}).exec();
   res.render("profile", { items: items });
 });
@@ -63,9 +74,8 @@ app.post("/signin", async (req, res) => {
     return res.status(400).json({ message: "User not found." });
   } else {
     if (await user.validatePassword(req.body.password)) {
-      return res.status(200).json({
-        message: "User Successfully Logged In",
-      });
+      req.session.user = user;
+      return res.redirect("/profile");
     } else {
       return res.status(400).json({ message: "User not found." });
     }
