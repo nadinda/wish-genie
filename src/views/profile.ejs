@@ -14,8 +14,13 @@
   <body>
     <nav class="navbar sticky">
       <a href="/">Wish Genie</a>
+
       <ul class="nav-links-container">
-          <li class="nav-link"><a href="/" class="links">Sign Out</a></li>
+          <li class="nav-link">
+            <form action="/signout" method="post">
+              <button type="submit" class="btn-link links">Sign Out</button>
+            </form>
+          </li>
       </ul>
     </nav>
 

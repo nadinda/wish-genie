@@ -31,6 +31,16 @@
   opacity: 1;
 }
 
+.btn-link {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 .card-container {
   display: flex;
   flex-wrap: wrap;

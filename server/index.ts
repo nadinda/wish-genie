@@ -82,6 +82,18 @@ app.post("/signin", async (req, res) => {
   }
 });
 
+app.post("/signout", async (req, res) => {
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(400).json({ message: "Unable to sign out" });
+      } else {
+        return res.redirect("/");
+      }
+    });
+  }
+});
+
 // start the server
 app.listen(process.env.DEV_PORT, () => {
   console.log(
