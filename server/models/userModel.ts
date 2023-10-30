@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import argon2 from "argon2";
 
 export interface IUser extends Document {
+  _id: string | undefined;
   role: string;
   fullName: string;
   userName: string;

@@ -17,6 +17,10 @@ const itemSchema = new mongoose.Schema({
   current_amount: { type: Number },
   product_url: { type: String },
   status: { type: String },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 const Item = mongoose.model<IItem>("Item", itemSchema);

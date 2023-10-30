@@ -15,9 +15,13 @@
     <nav class="navbar sticky">
       <a href="/">Wish Genie</a>
       <ul class="nav-links-container">
+        <% if(user){ %>
+          <li class="nav-link"><a href="/profile" class="links">My Profile</a></li>
+        <% } else { %>
           <li class="nav-link"><a href="/addItem" class="links">Create Wish</a></li>
           <li class="nav-link"><a href="/signin" class="links">Sign In</a></li>
           <li class="nav-link"><a href="/signup" class="links">Sign Up</a></li>
+        <% } %>
       </ul>
     </nav>
 

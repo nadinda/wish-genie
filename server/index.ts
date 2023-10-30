@@ -26,13 +26,13 @@ function restrict(req: Request, res: Response, next: NextFunction) {
 }
 
 // define a route handler for the default home page
-app.get("/", (_, res) => {
+app.get("/", (req, res) => {
   // render the index template
-  res.render("index");
+  res.render("index", { user: req.session.user });
 });
 
-app.get("/addItem", (_, res) => {
-  res.render("addItem");
+app.get("/addItem", (req, res) => {
+  res.render("addItem", { user: req.session.user });
 });
 
 app.get("/signup", (_, res) => {
@@ -43,15 +43,29 @@ app.get("/signin", (_, res) => {
   res.render("signin");
 });
 
-app.get("/profile", restrict, async (_, res) => {
-  const items = await Item.find({}).exec();
-  res.render("profile", { items: items });
+app.get("/profile", restrict, async (req, res) => {
+  const items = await Item.find({ owner: req.session.user?._id });
+  res.render("profile", { items: items, user: req.session.user });
 });
 
 app.post("/addItem", async (req, res) => {
   const newItem = Object.assign(new Item(), req.body);
-  const savedItem = await newItem.save();
-  res.redirect("/item/" + savedItem.id);
+  if (req.session.user) {
+    newItem.owner = req.session.user._id;
+  } else {
+    const newUser = new User({
+      email: req.body.email,
+    });
+
+    newUser.password = await newUser.createHash(
+      `${process.env.NEW_USER_DEFAULT_PASSWORD}`
+    );
+    newItem.owner = await newUser.save();
+  }
+
+  //const savedItem = await newItem.save();
+  //res.redirect("/item/" + savedItem.id);
+  res.redirect("profile");
 });
 
 app.post("/signup", async (req, res) => {

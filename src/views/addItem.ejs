@@ -12,14 +12,25 @@
   <nav class="navbar sticky">
     <a href="/">Wish Genie</a>
     <ul class="nav-links-container">
+      <% if(user){ %>
+        <li class="nav-link"><a href="/profile" class="links">My Profile</a></li>
+      <% } else { %>
         <li class="nav-link"><a href="/signin" class="links">Sign In</a></li>
         <li class="nav-link"><a href="/signup" class="links">Sign Up</a></li>
+      <% } %>
     </ul>
   </nav>
 
   <form class="form-container" action="/addItem" method="post">
     <div class="form-body">
       <h1>Add Wishlist Item</h1>
+
+      <% if(!user){ %>
+        <div class="form-group">
+          <label for="email" class="label-title">Email</label>
+          <input type="text" name="email" id="email" class="form-input" placeholder="jane@fabmail.com" required="required" />
+        </div>
+      <% } %>
 
       <div class="form-group">
         <label for="name" class="label-title">Item name</label>
@@ -33,7 +44,7 @@
 
       <div class="form-group">
         <label for="product_url" class="label-title">Link to product page</label>
-        <input type="text" name="product_url" id="product_url" class="form-input" placeholder="Elm course" />
+        <input type="text" name="product_url" id="product_url" class="form-input" placeholder="https://www.udemy.com/" />
       </div>
 
       <div class="form-group">
