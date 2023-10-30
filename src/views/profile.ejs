@@ -32,8 +32,8 @@
         <button type="button" >Share profile</button>
       </div>
       <div class="right">
-        <h3>Jane Doe</h3>
-        <p>@cooljane</p>
+        <h3><%=user.fullName%></h3>
+        <p>@<%=user.userName%></p>
       </div>
     </div>
 
@@ -43,7 +43,7 @@
         <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2874&q=80" alt="Item Image" style="width:100%">
         <div class="card-details-container">
           <h4><b><%=item.name%></b></h4>
-          <p><%=item.target_amount%></p>
+          <p>€<%=item.targetAmount%></p>
           <p><%=item.description%></p>
           <button class="card-button">Gift It Now</button>
         </div>
