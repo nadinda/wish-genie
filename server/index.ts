@@ -45,7 +45,23 @@ app.get("/signin", (_, res) => {
 
 app.get("/profile", restrict, async (req, res) => {
   const items = await Item.find({ ownerId: req.session.user?._id });
-  res.render("profile", { items: items, user: req.session.user });
+  res.render("profile", {
+    items: items,
+    user: req.session.user,
+    loggedInUser: req.session.user,
+    isMyProfile: true,
+  });
+});
+
+app.get("/user/:username", async (req, res) => {
+  const user = await User.findOne({ userName: req.params.username });
+  const items = await Item.find({ ownerId: user?._id });
+  res.render("profile", {
+    items: items,
+    user: user,
+    loggedInUser: req.session.user,
+    isMyProfile: false,
+  });
 });
 
 app.get("/items/:id", restrict, async (req, res) => {
