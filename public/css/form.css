@@ -33,6 +33,16 @@
   opacity: 1;
 }
 
+.btn-link {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 body {
   background: linear-gradient(to right, #f6bc2a 0%, #956c0e 50%, #ebd08c 99%);
 }

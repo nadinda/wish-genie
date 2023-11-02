@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export interface IItem extends Document {
   name: string;
@@ -7,6 +7,8 @@ export interface IItem extends Document {
   currentAmount: number;
   productUrl: string;
   status: "open" | "claimed" | "received";
+  ownerId: Types.ObjectId;
+  gifters: Array<{ amount: number; gifterId: Types.ObjectId | string }>;
 }
 
 const itemSchema = new mongoose.Schema({
@@ -17,10 +19,16 @@ const itemSchema = new mongoose.Schema({
   currentAmount: { type: Number },
   productUrl: { type: String },
   status: { type: String },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
+  ownerId: {
+    type: Types.ObjectId,
     ref: "User",
   },
+  gifters: [
+    {
+      amount: { type: Number },
+      gifterId: { type: Types.ObjectId, ref: "User" },
+    },
+  ],
 });
 
 const Item = mongoose.model<IItem>("Item", itemSchema);

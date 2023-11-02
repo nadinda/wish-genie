@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="/css/form.css" />
+
+    <title>Wish Genie</title>
+  </head>
+
+  <body>
+    <nav class="navbar sticky">
+      <a href="/">Wish Genie</a>
+
+      <ul class="nav-links-container">
+        <li class="nav-link"><a href="/profile" class="links">My Profile</a></li>
+        <li class="nav-link">
+          <form action="/signout" method="post">
+            <button type="submit" class="btn-link links">Sign Out</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+
+    <form class="form-container" action="/items/<%=item._id%>/gift" method="post">
+      <div class="form-body">
+        <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2874&q=80" alt="Item Image" style="width:100%">
+        <h4><b><%=item.name%></b></h4>
+        <p>Item Price: €<%=item.targetAmount%></p>
+        <p>Amount still needed: €<%=item.targetAmount - item.currentAmount%></p>
+
+        <h3>Enter your gifting amount</h3>
+        <div class="form-group">
+          <input class="form-input" type="number" step="0.01" name="giftAmount" placeholder="Enter amount" aria-label="gift amount">
+          <button class="btn">Submit</button>
+        </div>
+
+      </div>
+    </form>
+  </body>
+</html>

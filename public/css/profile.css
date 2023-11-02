@@ -81,7 +81,11 @@
   border-radius: 5px 5px 0 0;
 }
 
-.card-button {
+.card-details-container form {
+  text-align: center;
+}
+
+form .card-button {
   border-radius: 5px;
   background-color: #f3b10b;
   color: white;

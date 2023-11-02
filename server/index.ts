@@ -44,14 +44,22 @@ app.get("/signin", (_, res) => {
 });
 
 app.get("/profile", restrict, async (req, res) => {
-  const items = await Item.find({ owner: req.session.user?._id });
+  const items = await Item.find({ ownerId: req.session.user?._id });
   res.render("profile", { items: items, user: req.session.user });
 });
 
+app.get("/items/:id", restrict, async (req, res) => {
+  const item = await Item.findOne({
+    _id: req.params.id,
+    ownerId: req.session.user?._id,
+  });
+  res.render("viewItem", { item: item, user: req.session.user });
+});
+
 app.post("/addItem", async (req, res) => {
-  const newItem = Object.assign(new Item(), req.body);
+  const newItem = Object.assign(new Item({ currentAmount: 0 }), req.body);
   if (req.session.user) {
-    newItem.owner = req.session.user._id;
+    newItem.ownerId = req.session.user._id;
   } else {
     const newUser = new User({
       email: req.body.email,
@@ -60,7 +68,7 @@ app.post("/addItem", async (req, res) => {
     newUser.password = await newUser.createHash(
       `${process.env.NEW_USER_DEFAULT_PASSWORD}`
     );
-    newItem.owner = await newUser.save();
+    newItem.ownerId = await newUser.save();
   }
 
   //const savedItem = await newItem.save();
@@ -79,12 +87,44 @@ app.post("/items/:id/delete", restrict, async (req, res) => {
   try {
     await Item.findOneAndDelete({
       _id: req.params.id,
-      owner: req.session.user?._id,
+      ownerId: req.session.user?._id,
     });
     res.redirect("/profile");
   } catch (error) {
     console.error(error);
     res.send("Error: No item was deleted.");
+  }
+});
+
+app.post("/items/:id/gift", restrict, async (req, res) => {
+  const item = await Item.findOne({
+    _id: req.params.id,
+    ownerId: req.session.user?._id,
+  });
+
+  if (!item) return res.status(404).json({ message: "Item not found." });
+
+  if (!item.currentAmount) {
+    item.currentAmount = 0;
+  }
+
+  item.currentAmount += +req.body.giftAmount;
+
+  if (item.currentAmount > item.targetAmount) {
+    return res.status(400).json({ message: "Item Price is exceeded" });
+  }
+
+  item?.gifters.push({
+    gifterId: req.session.user?._id!,
+    amount: req.body.giftAmount,
+  });
+
+  try {
+    await item.save();
+    res.redirect("/profile");
+  } catch (error) {
+    console.error(error);
+    res.send("Error: No item was saved.");
   }
 });
 

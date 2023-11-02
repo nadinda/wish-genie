@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link rel="stylesheet" href="css/profile.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
     <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Wish Genie</title>
@@ -41,21 +41,25 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
 
     <div class="card-container">
       <% items.forEach(item => { %>
-        <div class="card">
-          <form action="/items/<%=item._id%>/delete" method="post">
-            <button type="submit" class="btn-link"><i class="fa-solid fa-square-xmark fa-xl"></i></button>
-          </form>
-          <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2874&q=80" alt="Item Image" style="width:100%">
-          <i class="fa-regular fa-pen-to-square" style="  margin: 250px 236px; position: absolute;"></i>
-          <div class="card-details-container">
-            <h4><b><%=item.name%></b></h4>
-            <p>€<%=item.targetAmount%></p>
-            <p><%=item.description%></p>
-            <button class="card-button">Gift It Now</button>
+          <div class="card">
+            <form action="/items/<%=item._id%>/delete" method="post">
+              <button type="submit" class="btn-link"><i class="fa-solid fa-square-xmark fa-xl"></i></button>
+            </form>
+            <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2874&q=80" alt="Item Image" style="width:100%">
+            <i class="fa-regular fa-pen-to-square" style="  margin: 250px 236px; position: absolute;"></i>
+            <div class="card-details-container">
+              <h4><b><%=item.name%></b></h4>
+              <p>€<%=item.targetAmount%></p>
+              <p><%=item.description%></p>
+              <form action="/items/<%=item._id%>" method="get">
+                <button type="submit" class="card-button">Gift It Now</button>
+              </form>
+            </div>
           </div>
-        </div>
       <% }); %>
     </div>
+
+
   </body>
 
 </html>
