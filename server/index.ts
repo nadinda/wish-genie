@@ -65,7 +65,27 @@ app.post("/addItem", async (req, res) => {
 
   //const savedItem = await newItem.save();
   //res.redirect("/item/" + savedItem.id);
-  res.redirect("profile");
+  //res.redirect("profile");
+  try {
+    await newItem.save();
+    res.redirect("/profile");
+  } catch (error) {
+    console.error(error);
+    res.send("Error: No item was saved.");
+  }
+});
+
+app.post("/items/:id/delete", restrict, async (req, res) => {
+  try {
+    await Item.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.session.user?._id,
+    });
+    res.redirect("/profile");
+  } catch (error) {
+    console.error(error);
+    res.send("Error: No item was deleted.");
+  }
 });
 
 app.post("/signup", async (req, res) => {
