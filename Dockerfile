@@ -7,7 +7,7 @@ FROM node:${NODE_VERSION}-slim as base
 LABEL fly_launch_runtime="NodeJS"
 
 # NodeJS app lives here
-WORKDIR /app
+WORKDIR /server
 
 # Set production environment
 ENV NODE_ENV=production
@@ -18,11 +18,11 @@ FROM base as build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
-    apt-get install -y python-is-python3 pkg-config build-essential 
+    apt-get install -y python-is-python3 pkg-config build-essential curl
 
 # Install node modules
 COPY --link package.json .
-RUN npm install --production=false
+RUN npm install --production=true
 
 # Copy application code
 COPY --link . .
@@ -38,7 +38,7 @@ RUN npm prune --production
 FROM base
 
 # Copy built application
-COPY --from=build /app /app
+COPY --from=build /server /server
 
 # Start the server by default, this can be overwritten at runtime
 CMD [ "npm", "run", "start" ]

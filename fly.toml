@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for wish-genie on 2023-11-03T00:31:56+01:00
+# fly.toml app configuration file generated for wish-genie on 2023-11-08T20:05:54+01:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -6,11 +6,15 @@
 app = "wish-genie"
 primary_region = "ams"
 
+[build]
+
 [env]
-  PORT = "8080"
+  PORT = "3000"
+  DEV_HOST = "0.0.0.0"
+  DEV_PORT = "3000"
 
 [http_service]
-  internal_port = 8080
+  internal_port = 3000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
