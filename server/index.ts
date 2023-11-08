@@ -67,7 +67,6 @@ app.get("/user/:username", async (req, res) => {
 app.get("/items/:id", restrict, async (req, res) => {
   const item = await Item.findOne({
     _id: req.params.id,
-    ownerId: req.session.user?._id,
   });
   res.render("viewItem", { item: item, user: req.session.user });
 });
@@ -115,7 +114,6 @@ app.post("/items/:id/delete", restrict, async (req, res) => {
 app.post("/items/:id/gift", restrict, async (req, res) => {
   const item = await Item.findOne({
     _id: req.params.id,
-    ownerId: req.session.user?._id,
   });
 
   if (!item) return res.status(404).json({ message: "Item not found." });
