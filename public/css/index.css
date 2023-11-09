@@ -16,6 +16,10 @@ body {
   background-color: white;
 }
 
+.navbar a img {
+  height: 60px;
+}
+
 .nav-links-container {
   display: flex;
   list-style: none;
