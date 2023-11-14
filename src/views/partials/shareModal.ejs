@@ -1,0 +1,6 @@
+<div class="modal-container">
+  <i class="fa-solid fa-xmark" onclick="showModal('share-modal')"></i>
+  <p>Share your profile</p>
+  <input id="input" type="text" readonly value="<%=process.env.APP_URL%>/user/<%=user.userName%>">
+  <button class="btn-copy" onclick="copyText('#input')">Copy</button>
+</div>

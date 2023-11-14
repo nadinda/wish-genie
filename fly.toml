@@ -12,6 +12,7 @@ primary_region = "ams"
   PORT = "3000"
   DEV_HOST = "0.0.0.0"
   DEV_PORT = "3000"
+  APP_URL = "https://wish-genie.fly.dev"
 
 [http_service]
   internal_port = 3000
