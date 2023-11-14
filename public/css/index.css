@@ -68,3 +68,19 @@ body {
   position: sticky;
   top: 0;
 }
+
+.avatar-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.item-gifters {
+  margin: 16px 0 16px 0;
+  display: flex;
+  align-items: center;
+}
+
+.item-gifters p {
+  margin-right: 16px;
+}

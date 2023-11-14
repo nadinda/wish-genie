@@ -27,7 +27,15 @@
     <form class="form-container" action="/items/<%=item._id%>/gift" method="post">
       <div class="form-body">
         <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2874&q=80" alt="Item Image" style="width:100%">
-        <h4><b><%=item.name%></b></h4>
+        <div class="item-gifters">
+          <p>Gifted by:</p>
+          <% gifters.forEach(gifter => { %>
+            <a href="<%=process.env.APP_URL%>/user/<%=gifter.userName%>" >
+              <img class="avatar-img" alt="gifter avatar image" src="<%=gifter.avatarUrl%>"  />
+            </a>
+          <% }); %>
+        </div>
+        <h3><b><%=item.name%></b></h3>
         <p>Item Price: €<%=item.targetAmount%></p>
         <p>Amount still needed: €<%=item.targetAmount - item.currentAmount%></p>
 

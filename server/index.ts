@@ -68,7 +68,21 @@ app.get("/items/:id", restrict, async (req, res) => {
   const item = await Item.findOne({
     _id: req.params.id,
   });
-  res.render("viewItem", { item: item, user: req.session.user });
+
+  const gifters = await User.aggregate()
+    .match({ _id: { $in: item?.gifters.map((gifter) => gifter.gifterId) } })
+    .group({
+      _id: null,
+      gifters: {
+        $push: { userName: "$userName", avatarUrl: "$avatarUrl" },
+      },
+    });
+
+  res.render("viewItem", {
+    item: item,
+    gifters: gifters[0].gifters,
+    user: req.session.user,
+  });
 });
 
 app.get("/items/:id/edit", restrict, async (req, res) => {
