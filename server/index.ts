@@ -71,6 +71,13 @@ app.get("/items/:id", restrict, async (req, res) => {
   res.render("viewItem", { item: item, user: req.session.user });
 });
 
+app.get("/items/:id/edit", restrict, async (req, res) => {
+  const item = await Item.findOne({
+    _id: req.params.id,
+  });
+  res.render("editItem", { item: item, user: req.session.user });
+});
+
 app.post("/addItem", async (req, res) => {
   const newItem = Object.assign(new Item({ currentAmount: 0 }), req.body);
   if (req.session.user) {
@@ -95,6 +102,22 @@ app.post("/addItem", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.send("Error: No item was saved.");
+  }
+});
+
+app.post("/items/:id/edit", restrict, async (req, res) => {
+  try {
+    await Item.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        ownerId: req.session.user?._id,
+      },
+      req.body
+    );
+    res.redirect(`/profile`);
+  } catch (error) {
+    console.error(error);
+    res.send("Error: The item was not updated.");
   }
 });
 

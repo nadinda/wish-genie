@@ -52,10 +52,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
               <form action="/items/<%=item._id%>/delete" method="post">
                 <button type="submit" class="btn-link"><i class="fa-solid fa-square-xmark fa-xl"></i></button>
               </form>
-              <i class="fa-regular fa-pen-to-square" style="  margin: 250px 236px; position: absolute;"></i>
             <% } %>
             <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b" alt="default Item Image" style="width:100%">
             <div class="card-details-container">
+              <% if(isMyProfile){ %>
+                <form action="/items/<%=item._id%>/edit" method="get">
+                  <button type="submit" class="btn-link"><i class="fa-regular fa-pen-to-square"></i></button>
+                </form>
+              <% } %>
               <h4><b><%=item.name%></b></h4>
               <p>€<%=item.targetAmount%></p>
               <p><%=item.description%></p>
