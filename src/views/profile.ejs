@@ -15,23 +15,25 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
       <a href="/"><img src="/img/logo.png" type="image/png" alt="wish genie logo" /></a>
 
       <ul class="nav-links-container">
-          <% if(loggedInUser){ %>
-            <li class="nav-link"><a href="/addItem" class="links">Create Wish</a></li>
-            <li class="nav-link">
-              <form action="/signout" method="post">
-                <button type="submit" class="btn-link links">Sign Out</button>
-              </form>
-            </li>
-          <% } %>
+        <li class="nav-link"><a href="/addItem" class="links">Create Wish</a></li>
+        <% if(loggedInUser){ %>
+          <li class="nav-link">
+            <form action="/signout" method="post">
+              <button type="submit" class="btn-link links">Sign Out</button>
+            </form>
+          </li>
+        <% } else { %>
+          <li class="nav-link"><a href="/signin" class="links">Sign In</a></li>
+        <% } %>
       </ul>
     </nav>
 
     <div class="user-details-container">
       <div class="left">
-        <% if(user.avatarUrl){ %>
-          <img src="<%=user.avatarUrl%>" alt="user avatar image" />
-        <% } else { %>
+        <% if(!user.avatarUrl){ %>
           <img src="https://robohash.org/default" alt="default user avatar image" />
+        <% } else { %>
+          <img alt="user avatar image" src="<%=user.avatarUrl%>" />
         <% } %>
         <button class="button-share" onclick="showModal('share-modal')">
           Share Profile

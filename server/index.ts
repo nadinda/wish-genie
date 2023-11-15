@@ -6,6 +6,7 @@ import { connectDB } from "./database/db.js";
 import Item from "./models/itemModel.js";
 import User from "./models/userModel.js";
 import "./types.js";
+import { generateRandomString } from "./utilities/util.js";
 
 const app = express();
 dotenv.config();
@@ -100,11 +101,14 @@ app.post("/addItem", async (req, res) => {
     const newUser = new User({
       email: req.body.email,
     });
-
+    const randomString = generateRandomString(6);
+    newUser.fullName = "User " + randomString;
+    newUser.userName = "user" + randomString;
     newUser.password = await newUser.createHash(
       `${process.env.NEW_USER_DEFAULT_PASSWORD}`
     );
     newItem.ownerId = await newUser.save();
+    req.session.user = newUser;
   }
 
   //const savedItem = await newItem.save();
