@@ -187,7 +187,7 @@ app.post("/items/:id/gift", restrict, async (req, res) => {
 
   try {
     await item.save();
-    res.redirect("/profile");
+    res.redirect(`/items/${item._id}`);
   } catch (error) {
     console.error(error);
     res.send("Error: No item was saved.");
