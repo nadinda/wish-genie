@@ -18,6 +18,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         <li class="nav-link"><a href="/addItem" class="links">Create Wish</a></li>
         <% if(loggedInUser){ %>
           <li class="nav-link">
+            <form action="/account/edit" method="get">
+              <button type="submit" class="btn-link links">Edit Account</button>
+            </form>
+          </li>
+          <li class="nav-link">
             <form action="/signout" method="post">
               <button type="submit" class="btn-link links">Sign Out</button>
             </form>

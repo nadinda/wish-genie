@@ -4,7 +4,7 @@ import path from "path";
 import session from "express-session";
 import { connectDB } from "./database/db.js";
 import Item from "./models/itemModel.js";
-import User from "./models/userModel.js";
+import User, { IUser } from "./models/userModel.js";
 import "./types.js";
 import { generateRandomString } from "./utilities/util.js";
 
@@ -65,6 +65,16 @@ app.get("/user/:username", async (req, res) => {
   });
 });
 
+app.get("/account/edit", restrict, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.session.user?._id });
+    res.render("editAccount", { user: user });
+  } catch (error) {
+    console.error(error);
+    res.send("Error: Account not found.");
+  }
+});
+
 app.get("/items/:id", restrict, async (req, res) => {
   const item = await Item.findOne({
     _id: req.params.id,
@@ -81,7 +91,7 @@ app.get("/items/:id", restrict, async (req, res) => {
 
   res.render("viewItem", {
     item: item,
-    gifters: gifters[0].gifters,
+    gifters: gifters[0] ? gifters[0].gifters : [],
     user: req.session.user,
   });
 });
@@ -98,12 +108,13 @@ app.post("/addItem", async (req, res) => {
   if (req.session.user) {
     newItem.ownerId = req.session.user._id;
   } else {
+    const randomString = generateRandomString(6);
     const newUser = new User({
       email: req.body.email,
+      fullName: "User " + randomString,
+      userName: "user" + randomString,
+      avatarUrl: "https://robohash.org/default",
     });
-    const randomString = generateRandomString(6);
-    newUser.fullName = "User " + randomString;
-    newUser.userName = "user" + randomString;
     newUser.password = await newUser.createHash(
       `${process.env.NEW_USER_DEFAULT_PASSWORD}`
     );
@@ -189,11 +200,12 @@ app.post("/signup", async (req, res) => {
     userName: req.body.userName,
     email: req.body.email,
     bio: req.body.bio,
+    avatarUrl: "https://robohash.org/default",
   });
 
   newUser.password = await newUser.createHash(req.body.password);
-  const savedUser = await newUser.save();
-  res.redirect("/user/" + savedUser.id);
+  await newUser.save();
+  res.redirect("/signin");
 });
 
 app.post("/signin", async (req, res) => {
@@ -220,6 +232,40 @@ app.post("/signout", async (req, res) => {
         return res.redirect("/");
       }
     });
+  }
+});
+
+app.post("/account/edit", restrict, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.session.user?._id });
+
+    const updatedUserData: Partial<IUser> = {
+      fullName: req.body.fullName,
+      userName: req.body.userName,
+      email: req.body.email,
+      bio: req.body.bio,
+    };
+
+    if (req.body.password) {
+      updatedUserData.password = await user?.createHash(req.body.password);
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      {
+        _id: req.session.user?._id,
+      },
+      updatedUserData,
+      { new: true }
+    );
+
+    if (updatedUser) {
+      req.session.user = updatedUser;
+    }
+
+    res.redirect(`/profile`);
+  } catch (error) {
+    console.error(error);
+    res.send("Error: Account data was not updated.");
   }
 });
 

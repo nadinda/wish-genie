@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/form.css" />
+
+    <title>Wish Genie</title>
+  </head>
+
+  <body>
+    <nav class="navbar sticky">
+      <a href="/"><img src="/img/logo.png" type="image/png" alt="wish genie logo" /></a>
+
+      <ul class="nav-links-container">
+        <li class="nav-link"><a href="/profile" class="links">My Profile</a></li>
+        <li class="nav-link">
+          <form action="/signout" method="post">
+            <button type="submit" class="btn-link links">Sign Out</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+
+    <form class="form-container" action="/account/edit" method="post">
+      <div class="form-body">
+        <h1>Edit Account</h1>
+        <div class="horizontal-group">
+          <div class="form-group">
+              <label for="fullname" class="label-title">Full name*</label>
+              <input type="text" name="fullName" id="fullname" class="form-input" value="<%=user.fullName%>" required="required"/>
+          </div>
+          <div class="form-group">
+              <label for="username" class="label-title">Username*</label>
+              <input type="text" name="userName" id="username" class="form-input" value="<%=user.userName%>" required="required"/>
+          </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="label-title">Email*</label>
+        <input type="email" name="email" id="email" class="form-input" value="<%=user.email%>" required="required">
+      </div>
+
+      <div class="horizontal-group">
+
+        <div class="form-group left">
+          <label for="password" class="label-title">Password</label>
+          <input type="password" name="password" id="password" class="form-input" placeholder="type your new password">
+        </div>
+
+        <div class="form-group right">
+          <label for="confirm-password" class="label-title">Confirm Password</label>
+          <input type="password" class="form-input" id="confirm-password" placeholder="re-type your password">
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="choose-file" class="label-title">Bio</label>
+        <textarea name="bio" id="bio" class="form-input" rows="4" cols="50" style="height:auto"><%=user.bio%></textarea>
+      </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn">Save</button>
+        </div>
+    </form>
+  </body>
+</html>
