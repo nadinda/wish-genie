@@ -69,26 +69,35 @@ app.get("/profile", restrict, async (req, res) => {
 });
 
 app.get("/user/:username", async (req, res) => {
-  const user = await User.findOne({ userName: req.params.username });
-  const items = await Item.find({ ownerId: user?._id });
+  try {
+    const user = await User.findOne({ userName: req.params.username });
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
-  const giftedAmounts = await Item.aggregate()
-    .match({
-      "gifters.gifterId": user?._id,
-    })
-    .unwind("$gifters")
-    .group({
-      _id: null,
-      total: { $sum: "$gifters.amount" },
+    const items = await Item.find({ ownerId: user?._id });
+
+    const giftedAmounts = await Item.aggregate()
+      .match({
+        "gifters.gifterId": user?._id,
+      })
+      .unwind("$gifters")
+      .group({
+        _id: null,
+        total: { $sum: "$gifters.amount" },
+      });
+
+    res.render("profile", {
+      items: items,
+      user: user,
+      loggedInUser: req.session.user,
+      isMyProfile: false,
+      totalGiftedAmount: giftedAmounts[0] ? giftedAmounts[0].total : 0,
     });
-
-  res.render("profile", {
-    items: items,
-    user: user,
-    loggedInUser: req.session.user,
-    isMyProfile: false,
-    totalGiftedAmount: giftedAmounts[0] ? giftedAmounts[0].total : 0,
-  });
+  } catch (error) {
+    console.error(error);
+    res.send("Error: Account not found.");
+  }
 });
 
 app.get("/account/edit", restrict, async (req, res) => {
