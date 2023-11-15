@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import argon2 from "argon2";
 
 export interface IUser extends Document {
-  _id: string | undefined;
+  _id: Types.ObjectId | string;
   role: string;
   fullName: string;
   userName: string;

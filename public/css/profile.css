@@ -101,19 +101,23 @@ form .card-button {
 .user-details-container {
   display: flex;
   align-items: center;
-  text-align: center;
-  width: 240px;
   margin: 20px;
 }
 
 .user-details-container .left {
   margin-right: 20px;
+  flex: 1;
+  text-align: center;
 }
 
 .user-details-container .left img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
+}
+
+.user-details-container .right {
+  flex: 6;
 }
 
 .user-details-container .right h3 {

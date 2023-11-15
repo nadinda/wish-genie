@@ -35,7 +35,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
 
     <div class="user-details-container">
       <div class="left">
-        <% if(!user.avatarUrl){ %>
+        <% if(!user || !user.avatarUrl){ %>
           <img src="https://robohash.org/default" alt="default user avatar image" />
         <% } else { %>
           <img alt="user avatar image" src="<%=user.avatarUrl%>" />
@@ -51,6 +51,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
       <div class="right">
         <h3><%=user.fullName%></h3>
         <p>@<%=user.userName%></p>
+        <p>
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          Total amount gifted: €<%=totalGiftedAmount%>
+        </p>
       </div>
     </div>
 

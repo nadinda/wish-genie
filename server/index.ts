@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import path from "path";
 import session from "express-session";
+import mongoose from "mongoose";
 import { connectDB } from "./database/db.js";
 import Item from "./models/itemModel.js";
 import User, { IUser } from "./models/userModel.js";
@@ -46,22 +47,47 @@ app.get("/signin", (_, res) => {
 
 app.get("/profile", restrict, async (req, res) => {
   const items = await Item.find({ ownerId: req.session.user?._id });
+  const userId = new mongoose.Types.ObjectId(req.session.user?._id);
+
+  const giftedAmounts = await Item.aggregate()
+    .match({
+      "gifters.gifterId": userId,
+    })
+    .unwind("$gifters")
+    .group({
+      _id: null,
+      total: { $sum: "$gifters.amount" },
+    });
+
   res.render("profile", {
     items: items,
     user: req.session.user,
     loggedInUser: req.session.user,
     isMyProfile: true,
+    totalGiftedAmount: giftedAmounts[0] ? giftedAmounts[0].total : 0,
   });
 });
 
 app.get("/user/:username", async (req, res) => {
   const user = await User.findOne({ userName: req.params.username });
   const items = await Item.find({ ownerId: user?._id });
+
+  const giftedAmounts = await Item.aggregate()
+    .match({
+      "gifters.gifterId": user?._id,
+    })
+    .unwind("$gifters")
+    .group({
+      _id: null,
+      total: { $sum: "$gifters.amount" },
+    });
+
   res.render("profile", {
     items: items,
     user: user,
     loggedInUser: req.session.user,
     isMyProfile: false,
+    totalGiftedAmount: giftedAmounts[0] ? giftedAmounts[0].total : 0,
   });
 });
 
