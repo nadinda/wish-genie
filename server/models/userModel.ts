@@ -15,7 +15,6 @@ export interface IUser extends Document {
 }
 
 const userSchema = new mongoose.Schema({
-  //_id: mongoose.Schema.Types.ObjectId,
   role: { type: String },
   fullName: { type: String, required: true },
   userName: { type: String, required: true, index: { unique: true } },

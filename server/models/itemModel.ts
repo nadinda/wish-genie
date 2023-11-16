@@ -12,7 +12,6 @@ export interface IItem extends Document {
 }
 
 const itemSchema = new mongoose.Schema({
-  //_id: mongoose.Schema.Types.ObjectId,
   name: { type: String, required: true },
   description: { type: String },
   targetAmount: { type: Number },
