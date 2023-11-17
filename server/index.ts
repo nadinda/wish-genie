@@ -114,16 +114,15 @@ app.get("/items/:id", restrict, async (req, res) => {
 
   const gifters = await User.aggregate()
     .match({ _id: { $in: item?.gifters.map((gifter) => gifter.gifterId) } })
-    .group({
+    .project({
       _id: null,
-      gifters: {
-        $push: { userName: "$userName", avatarUrl: "$avatarUrl" },
-      },
+      userName: "$userName",
+      avatarUrl: "$avatarUrl",
     });
 
   res.render("viewItem", {
     item: item,
-    gifters: gifters[0] ? gifters[0].gifters : [],
+    gifters: gifters ? gifters : [],
     user: req.session.user,
   });
 });
