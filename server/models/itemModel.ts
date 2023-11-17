@@ -28,6 +28,18 @@ const itemSchema = new mongoose.Schema({
       gifterId: { type: Types.ObjectId, ref: "User" },
     },
   ],
+  comments: [
+    {
+      content: { type: String },
+      authorId: { type: Types.ObjectId, ref: "User" },
+    },
+  ],
+  images: [
+    {
+      isCover: { type: Boolean },
+      url: { type: String },
+    },
+  ],
 });
 
 const Item = mongoose.model<IItem>("Item", itemSchema);
