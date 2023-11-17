@@ -47,10 +47,10 @@ app.get("/profile", restrict, async (req, res) => {
   const userId = new mongoose.Types.ObjectId(req.session.user?._id);
 
   const giftedAmounts = await Item.aggregate()
+    .unwind("$gifters")
     .match({
       "gifters.gifterId": userId,
     })
-    .unwind("$gifters")
     .group({
       _id: null,
       total: { $sum: "$gifters.amount" },
@@ -75,10 +75,10 @@ app.get("/user/:username", async (req, res) => {
     const items = await Item.find({ ownerId: user?._id });
 
     const giftedAmounts = await Item.aggregate()
+      .unwind("$gifters")
       .match({
         "gifters.gifterId": user?._id,
       })
-      .unwind("$gifters")
       .group({
         _id: null,
         total: { $sum: "$gifters.amount" },
